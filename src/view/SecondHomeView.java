@@ -1,0 +1,1197 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package view;
+
+import assets.Constant;
+import java.awt.Color;
+import java.awt.Point;
+import java.util.HashMap;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import model.EmployeeModel;
+import services.UserController;
+
+/**
+ *
+ * @author ACER
+ */
+public class SecondHomeView extends javax.swing.JFrame {
+
+    /**
+     * Creates new form SecondHomeView
+     */
+    private int x;
+    private int y;
+    private UserController controller;
+    private EmployeeModel emp;
+    private HashMap<String, Object> depMap;
+    private String gender = "male";
+    private boolean isExist;
+
+    public SecondHomeView(int selected, UserController controller) {
+        this.controller = controller;
+        initComponents();
+        setComponents();
+        frameSetting();
+        changePanel(selected);
+    }
+
+    private void getItems() {
+        departmentCombo.removeAllItems();
+        departmentCombo.addItem("Select one");
+        controller.getDepartmentsList(((values) -> {
+            departmentCombo.addItem(values.get("name").toString());
+        }));
+    }
+
+    private void frameSetting() {
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/assets/iconLogo.png"));
+        this.setIconImage(imageIcon.getImage());
+    }
+
+    private void setComponents() {
+        setLocationRelativeTo(null);
+
+        genderGroup.add(maleRadioBTN);
+        genderGroup.add(femaleRadioBTN);
+
+        jScrollPane1.getViewport().setBackground(Color.white);
+        empTable.getTableHeader().setOpaque(false);
+        empTable.getTableHeader().setBackground(new Color(1, 209, 143));
+        empTable.getTableHeader().setForeground(new Color(255, 255, 255));
+
+        jScrollPane2.getViewport().setBackground(Color.white);
+        depTable.getTableHeader().setOpaque(false);
+        depTable.getTableHeader().setBackground(new Color(1, 209, 143));
+        depTable.getTableHeader().setForeground(new Color(255, 255, 255));
+
+        statusPane.setVisible(false);
+
+        showEmployeesList("all");
+        showDepartmentList();
+    }
+
+    private void showDepartmentList() {
+        DefaultTableModel tableModel = (DefaultTableModel) depTable.getModel();
+        tableModel.setRowCount(0);
+
+        controller.getDepartmentsList((values) -> {
+
+            Object[] dep = new Object[2];
+            dep[0] = values.get("number");
+            dep[1] = values.get("name");
+            tableModel.addRow(dep);
+        });
+
+        getItems();
+    }
+
+    private void showEmployeesList(String filter) {
+        controller.getDepartmentsList(((values) -> {
+        }));
+        DefaultTableModel tableModel = (DefaultTableModel) empTable.getModel();
+        tableModel.setRowCount(0);
+        controller.getEmployeeList((model) -> {
+            String[] employee = new String[6];
+            String status = controller.getStatus(model.isLocked());
+            if (!model.getUsername().equals("admin")) {
+                if (filter.equals("all")) {
+                    employee = display(model);
+                    tableModel.addRow(employee);
+                } else if (filter.equals(status)) {
+                    employee = display(model);
+                    tableModel.addRow(employee);
+                }
+            }
+
+        }
+        );
+
+    }
+
+    private String[] display(EmployeeModel model) {
+        String[] employee = new String[6];
+        employee[0] = model.getUsername();
+        employee[1] = model.getFirst_name();
+        employee[2] = model.getLast_name();
+        employee[3] = model.getGender();
+        employee[4] = model.getDepartment();
+        employee[5] = controller.getStatus(model.isLocked());
+        return employee;
+    }
+
+    private void changePanel(int select) {
+        employeeLayerPane.setVisible(false);
+        departmentLayerPane.setVisible(false);
+        aboutLayerPane.setVisible(false);
+
+        about.setForeground(Color.WHITE);
+        us.setForeground(Color.WHITE);
+        empBTNLabel.setIcon(Constant.empIcon);
+        depBTNLabel.setIcon(Constant.depIcon);
+        if (select == 1) {
+            employeeLayerPane.setVisible(true);
+            empBTNLabel.setIcon(Constant.empIcon_higlight);
+        } else if (select == 2) {
+            departmentLayerPane.setVisible(true);
+            depBTNLabel.setIcon(Constant.depIcon_higlight);
+        } else if (select == 3) {
+            aboutLayerPane.setVisible(true);
+            about.setForeground(Constant.KSecondaryColor);
+            us.setForeground(Constant.KSecondaryColor);
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        genderGroup = new javax.swing.ButtonGroup();
+        layeredPane = new javax.swing.JLayeredPane();
+        employeeLayerPane = new javax.swing.JPanel();
+        frameBar = new javax.swing.JPanel();
+        minLabel = new javax.swing.JLabel();
+        exitLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        usernamePane = new javax.swing.JPanel();
+        userField = new javax.swing.JTextField();
+        fNamePane = new javax.swing.JPanel();
+        fNameField = new javax.swing.JTextField();
+        lNamePane = new javax.swing.JPanel();
+        lNameField = new javax.swing.JTextField();
+        passwordPane = new javax.swing.JPanel();
+        passwordField = new javax.swing.JTextField();
+        genderPane = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        maleRadioBTN = new javax.swing.JRadioButton();
+        femaleRadioBTN = new javax.swing.JRadioButton();
+        departmentPane = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        departmentCombo = new javax.swing.JComboBox<>();
+        clearButton = new javax.swing.JButton();
+        saveButton1 = new javax.swing.JButton();
+        filterPane = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        filterCombo = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        empTable = new javax.swing.JTable();
+        status = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        statusPane = new javax.swing.JPanel();
+        statusBtn = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        deletePane = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        deleteField = new javax.swing.JTextField();
+        deleteButton = new javax.swing.JButton();
+        departmentLayerPane = new javax.swing.JPanel();
+        frameBar1 = new javax.swing.JPanel();
+        minLabel1 = new javax.swing.JLabel();
+        exitLabel1 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        deletePane1 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        deleteField1 = new javax.swing.JTextField();
+        deleteButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        depTable = new javax.swing.JTable();
+        DepartmentInfoPane = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        depNumberField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        depNameField = new javax.swing.JTextField();
+        addBTN = new javax.swing.JLabel();
+        clearBTN = new javax.swing.JLabel();
+        aboutLayerPane = new javax.swing.JPanel();
+        frameBar2 = new javax.swing.JPanel();
+        minLabel2 = new javax.swing.JLabel();
+        exitLabel2 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        navPane = new javax.swing.JPanel();
+        backButtonLabel = new javax.swing.JLabel();
+        empBTNLabel = new javax.swing.JLabel();
+        depBTNLabel = new javax.swing.JLabel();
+        aboutBTN = new javax.swing.JPanel();
+        about = new javax.swing.JLabel();
+        us = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        layeredPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        employeeLayerPane.setBackground(new java.awt.Color(255, 255, 255));
+        employeeLayerPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                moveDragged(evt);
+            }
+        });
+        employeeLayerPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                movePressed(evt);
+            }
+        });
+        employeeLayerPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        frameBar.setBackground(new java.awt.Color(255, 255, 255));
+        frameBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        minLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8_minus_48px_1 1.png"))); // NOI18N
+        minLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minLabel1MouseClicked(evt);
+            }
+        });
+        frameBar.add(minLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        exitLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/exitButton.png"))); // NOI18N
+        exitLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        frameBar.add(exitLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 30, 30));
+
+        employeeLayerPane.add(frameBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 22, 82, 30));
+
+        jLabel3.setFont(new java.awt.Font("Baloo Bhai", 0, 50)); // NOI18N
+        jLabel3.setText("EMPLOYEE");
+        employeeLayerPane.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 19, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Baloo Bhai", 0, 30)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(52, 65, 143));
+        jLabel4.setText("LIST");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        employeeLayerPane.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 83, -1, -1));
+
+        usernamePane.setBackground(new java.awt.Color(236, 236, 236));
+        usernamePane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        userField.setBackground(new java.awt.Color(236, 236, 236));
+        userField.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        userField.setForeground(new java.awt.Color(95, 95, 95));
+        userField.setText("Username");
+        userField.setToolTipText("Enter your Username");
+        userField.setBorder(null);
+        usernamePane.add(userField, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 10, 209, -1));
+
+        employeeLayerPane.add(usernamePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 154, 236, 39));
+
+        fNamePane.setBackground(new java.awt.Color(236, 236, 236));
+        fNamePane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        fNameField.setBackground(new java.awt.Color(236, 236, 236));
+        fNameField.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        fNameField.setForeground(new java.awt.Color(95, 95, 95));
+        fNameField.setText("First Name");
+        fNameField.setToolTipText("Enter your First Name");
+        fNameField.setBorder(null);
+        fNamePane.add(fNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 10, 209, -1));
+
+        employeeLayerPane.add(fNamePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 206, 236, 39));
+
+        lNamePane.setBackground(new java.awt.Color(236, 236, 236));
+        lNamePane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lNameField.setBackground(new java.awt.Color(236, 236, 236));
+        lNameField.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        lNameField.setForeground(new java.awt.Color(95, 95, 95));
+        lNameField.setText("Last Name");
+        lNameField.setToolTipText("Enter your Last Name");
+        lNameField.setBorder(null);
+        lNamePane.add(lNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 10, 209, -1));
+
+        employeeLayerPane.add(lNamePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 257, 236, 39));
+
+        passwordPane.setBackground(new java.awt.Color(236, 236, 236));
+        passwordPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        passwordField.setBackground(new java.awt.Color(236, 236, 236));
+        passwordField.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        passwordField.setForeground(new java.awt.Color(95, 95, 95));
+        passwordField.setText("Password");
+        passwordField.setToolTipText("Enter your Password");
+        passwordField.setBorder(null);
+        passwordPane.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 10, 209, -1));
+
+        employeeLayerPane.add(passwordPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(42, 308, 236, 39));
+
+        genderPane.setBackground(new java.awt.Color(255, 255, 255));
+        genderPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(95, 95, 95));
+        jLabel5.setText("GENDER");
+        genderPane.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        maleRadioBTN.setBackground(new java.awt.Color(255, 255, 255));
+        maleRadioBTN.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        maleRadioBTN.setForeground(new java.awt.Color(95, 95, 95));
+        maleRadioBTN.setSelected(true);
+        maleRadioBTN.setText("Male");
+        maleRadioBTN.setBorder(null);
+        maleRadioBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genderActionPerformed(evt);
+            }
+        });
+        genderPane.add(maleRadioBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(74, 0, 60, 19));
+
+        femaleRadioBTN.setBackground(new java.awt.Color(255, 255, 255));
+        femaleRadioBTN.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        femaleRadioBTN.setForeground(new java.awt.Color(95, 95, 95));
+        femaleRadioBTN.setText("Female");
+        femaleRadioBTN.setBorder(null);
+        femaleRadioBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genderActionPerformed(evt);
+            }
+        });
+        genderPane.add(femaleRadioBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 0, 60, 19));
+
+        employeeLayerPane.add(genderPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 358, 204, 19));
+
+        departmentPane.setBackground(new java.awt.Color(255, 255, 255));
+        departmentPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(95, 95, 95));
+        jLabel6.setText("Department");
+        departmentPane.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 4, -1, -1));
+
+        departmentCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select one" }));
+        departmentCombo.setBorder(null);
+        departmentPane.add(departmentCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(77, 0, 140, 28));
+
+        employeeLayerPane.add(departmentPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 388, 217, 28));
+
+        clearButton.setBackground(new java.awt.Color(255, 255, 255));
+        clearButton.setFont(new java.awt.Font("Baloo Bhai", 0, 14)); // NOI18N
+        clearButton.setText("Clear");
+        clearButton.setBorder(null);
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+        employeeLayerPane.add(clearButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(179, 450, 98, 33));
+
+        saveButton1.setBackground(new java.awt.Color(1, 209, 143));
+        saveButton1.setFont(new java.awt.Font("Baloo Bhai", 0, 14)); // NOI18N
+        saveButton1.setForeground(new java.awt.Color(255, 255, 255));
+        saveButton1.setText("SAVE");
+        saveButton1.setBorder(null);
+        saveButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButton1ActionPerformed(evt);
+            }
+        });
+        employeeLayerPane.add(saveButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 98, 33));
+
+        filterPane.setBackground(new java.awt.Color(255, 255, 255));
+        filterPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/filter.png"))); // NOI18N
+        filterPane.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 3, 15, 15));
+
+        filterCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "all", "locked", "unlocked" }));
+        filterCombo.setBorder(null);
+        filterCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterComboActionPerformed(evt);
+            }
+        });
+        filterPane.add(filterCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 0, 135, 21));
+
+        employeeLayerPane.add(filterPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(638, 81, 160, 21));
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        empTable.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
+        empTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Username", "First Name", "Last Name", "Gender", "Department", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        empTable.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        empTable.setRowHeight(28);
+        empTable.setSelectionBackground(new java.awt.Color(52, 65, 143));
+        empTable.setSelectionForeground(Color.white);
+        empTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        empTable.setShowVerticalLines(false);
+        empTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                empTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(empTable);
+
+        employeeLayerPane.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(301, 111, 497, 372));
+
+        status.setBackground(new java.awt.Color(255, 255, 255));
+        status.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Baloo Bhai", 0, 20)); // NOI18N
+        jLabel8.setText("STATUS");
+        status.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Montserrat Medium", 0, 10)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(139, 139, 139));
+        jLabel9.setText("(Select one user in table)");
+        status.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 26, -1, -1));
+
+        statusPane.setBackground(new java.awt.Color(255, 255, 255));
+        statusPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        statusBtn.setBackground(new java.awt.Color(252, 74, 74));
+        statusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Lock.png"))); // NOI18N
+        statusBtn.setBorder(null);
+        statusBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        statusBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statusBtnActionPerformed(evt);
+            }
+        });
+        statusPane.add(statusBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 27, 27));
+
+        jLabel10.setFont(new java.awt.Font("Montserrat Medium", 0, 15)); // NOI18N
+        jLabel10.setText("LOCKED");
+        statusPane.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 5, -1, -1));
+
+        status.add(statusPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 53, 128, 27));
+
+        employeeLayerPane.add(status, new org.netbeans.lib.awtextra.AbsoluteConstraints(301, 494, 131, 80));
+
+        deletePane.setBackground(new java.awt.Color(52, 65, 143));
+        deletePane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Baloo Bhai", 0, 15)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("DELETE USER");
+        deletePane.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 6, -1, -1));
+
+        deleteField.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        deleteField.setForeground(new java.awt.Color(95, 95, 95));
+        deleteField.setText("Username");
+        deleteField.setToolTipText("Enter Username");
+        deleteField.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        deletePane.add(deleteField, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 32, 166, 29));
+
+        deleteButton.setBackground(new java.awt.Color(252, 74, 74));
+        deleteButton.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(255, 255, 255));
+        deleteButton.setText("Delete");
+        deleteButton.setBorder(null);
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        deletePane.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 31, 128, 30));
+
+        employeeLayerPane.add(deletePane, new org.netbeans.lib.awtextra.AbsoluteConstraints(467, 500, 331, 74));
+
+        layeredPane.add(employeeLayerPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 818, 600));
+
+        departmentLayerPane.setBackground(new java.awt.Color(255, 255, 255));
+        departmentLayerPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                moveDragged(evt);
+            }
+        });
+        departmentLayerPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                movePressed(evt);
+            }
+        });
+        departmentLayerPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        frameBar1.setBackground(new java.awt.Color(255, 255, 255));
+        frameBar1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        minLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8_minus_48px_1 1.png"))); // NOI18N
+        minLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minLabel1MouseClicked(evt);
+            }
+        });
+        frameBar1.add(minLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        exitLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/exitButton.png"))); // NOI18N
+        exitLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exitLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        frameBar1.add(exitLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 30, 30));
+
+        departmentLayerPane.add(frameBar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 22, 82, 30));
+
+        jLabel12.setFont(new java.awt.Font("Baloo Bhai", 0, 50)); // NOI18N
+        jLabel12.setText("DEPARTMENT");
+        departmentLayerPane.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 19, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Baloo Bhai", 0, 30)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(52, 65, 143));
+        jLabel13.setText("LIST");
+        departmentLayerPane.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 83, -1, -1));
+
+        deletePane1.setBackground(new java.awt.Color(52, 65, 143));
+        deletePane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setFont(new java.awt.Font("Baloo Bhai", 0, 15)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setText("DELETE DEPARTMENT");
+        deletePane1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 6, -1, -1));
+
+        deleteField1.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        deleteField1.setForeground(new java.awt.Color(95, 95, 95));
+        deleteField1.setText("Number");
+        deleteField1.setToolTipText("Enter Number");
+        deleteField1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        deletePane1.add(deleteField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(19, 32, 166, 29));
+
+        deleteButton1.setBackground(new java.awt.Color(252, 74, 74));
+        deleteButton1.setFont(new java.awt.Font("Baloo Bhai", 0, 12)); // NOI18N
+        deleteButton1.setForeground(new java.awt.Color(255, 255, 255));
+        deleteButton1.setText("Delete");
+        deleteButton1.setBorder(null);
+        deleteButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButton1ActionPerformed(evt);
+            }
+        });
+        deletePane1.add(deleteButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 31, 128, 30));
+
+        departmentLayerPane.add(deletePane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 469, 331, 74));
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        depTable.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(0, 0, 0)));
+        depTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Department Number", "Department Name"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        depTable.setRowHeight(28);
+        depTable.setSelectionBackground(Constant.KSecondaryColor);
+        depTable.setSelectionForeground(Color.white);
+        depTable.setShowVerticalLines(false);
+        jScrollPane2.setViewportView(depTable);
+
+        departmentLayerPane.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(38, 157, 740, 254));
+
+        DepartmentInfoPane.setBackground(new java.awt.Color(255, 255, 255));
+        DepartmentInfoPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Montserrat Medium", 0, 20)); // NOI18N
+        jLabel1.setText("Department Number");
+        DepartmentInfoPane.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        depNumberField.setBackground(new java.awt.Color(236, 236, 236));
+        depNumberField.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        DepartmentInfoPane.add(depNumberField, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 38, 259, 39));
+
+        jLabel2.setFont(new java.awt.Font("Montserrat Medium", 0, 20)); // NOI18N
+        jLabel2.setText("Department Name");
+        DepartmentInfoPane.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 89, -1, -1));
+
+        depNameField.setBackground(new java.awt.Color(236, 236, 236));
+        depNameField.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        DepartmentInfoPane.add(depNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 126, 259, 39));
+
+        addBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/addBTN.png"))); // NOI18N
+        addBTN.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addBTN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addBTNMouseClicked(evt);
+            }
+        });
+        DepartmentInfoPane.add(addBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(301, 42, 46, 46));
+
+        clearBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/clearBTN.png"))); // NOI18N
+        clearBTN.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        clearBTN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearBTNMouseClicked(evt);
+            }
+        });
+        DepartmentInfoPane.add(clearBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(301, 101, 46, 46));
+
+        departmentLayerPane.add(DepartmentInfoPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 423, 347, 165));
+
+        layeredPane.add(departmentLayerPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 818, 600));
+
+        aboutLayerPane.setBackground(new java.awt.Color(255, 255, 255));
+        aboutLayerPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                moveDragged(evt);
+            }
+        });
+        aboutLayerPane.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                movePressed(evt);
+            }
+        });
+        aboutLayerPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        frameBar2.setBackground(new java.awt.Color(255, 255, 255));
+        frameBar2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        minLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/icons8_minus_48px_1 1.png"))); // NOI18N
+        minLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        minLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minLabel1MouseClicked(evt);
+            }
+        });
+        frameBar2.add(minLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        exitLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/exitButton.png"))); // NOI18N
+        exitLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exitLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        frameBar2.add(exitLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 30, 30));
+
+        aboutLayerPane.add(frameBar2, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 22, 82, 30));
+
+        jLabel14.setFont(new java.awt.Font("Baloo Bhai", 0, 50)); // NOI18N
+        jLabel14.setText("ABOUT");
+        aboutLayerPane.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 19, -1, -1));
+
+        jLabel15.setFont(new java.awt.Font("Baloo Bhai", 0, 30)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(52, 65, 143));
+        jLabel15.setText("US");
+        aboutLayerPane.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 83, -1, -1));
+
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/myProfile.png"))); // NOI18N
+        aboutLayerPane.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 157, 300, 300));
+
+        jLabel17.setFont(new java.awt.Font("Baloo Bhai", 0, 30)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(52, 65, 143));
+        jLabel17.setText("Muslimin Ontong");
+        aboutLayerPane.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 483, -1, -1));
+
+        jLabel18.setFont(new java.awt.Font("Montserrat Medium", 0, 15)); // NOI18N
+        jLabel18.setText("FINAL EXAM PROJECT");
+        aboutLayerPane.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 557, -1, -1));
+
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        aboutLayerPane.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(458, 83, 269, 102));
+
+        jLabel21.setFont(new java.awt.Font("Baloo Bhai", 0, 30)); // NOI18N
+        jLabel21.setText("SOFTWARE ENGINEER");
+        aboutLayerPane.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 234, -1, -1));
+
+        jLabel22.setFont(new java.awt.Font("Baloo Bhai", 0, 30)); // NOI18N
+        jLabel22.setText("UI/UX DESIGNER");
+        aboutLayerPane.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 186, -1, -1));
+
+        jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Saly-10.png"))); // NOI18N
+        aboutLayerPane.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(404, 172, 431, 431));
+
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/ellipse_3.png"))); // NOI18N
+        aboutLayerPane.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 501, 501));
+
+        layeredPane.add(aboutLayerPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 818, 600));
+
+        getContentPane().add(layeredPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 0, 818, 600));
+
+        navPane.setBackground(new java.awt.Color(1, 209, 143));
+        navPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        backButtonLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back.png"))); // NOI18N
+        backButtonLabel.setToolTipText("Home");
+        backButtonLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        backButtonLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backButtonLabelMouseClicked(evt);
+            }
+        });
+        navPane.add(backButtonLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 29, 50, 50));
+
+        empBTNLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/empBTN.png"))); // NOI18N
+        empBTNLabel.setToolTipText("Employee");
+        empBTNLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        empBTNLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navActionButton(evt);
+            }
+        });
+        navPane.add(empBTNLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 219, 52, 52));
+
+        depBTNLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/departmentBTN.png"))); // NOI18N
+        depBTNLabel.setToolTipText("Department");
+        depBTNLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        depBTNLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navActionButton(evt);
+            }
+        });
+        navPane.add(depBTNLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 314, 52, 52));
+
+        aboutBTN.setBackground(new java.awt.Color(1, 209, 143));
+        aboutBTN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                navActionButton(evt);
+            }
+        });
+        aboutBTN.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        about.setFont(new java.awt.Font("Baloo Bhai", 0, 15)); // NOI18N
+        about.setForeground(new java.awt.Color(255, 255, 255));
+        about.setText("ABOUT");
+        aboutBTN.add(about, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        us.setFont(new java.awt.Font("Baloo Bhai", 0, 15)); // NOI18N
+        us.setForeground(new java.awt.Color(255, 255, 255));
+        us.setText("US");
+        aboutBTN.add(us, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 16, -1, -1));
+
+        navPane.add(aboutBTN, new org.netbeans.lib.awtextra.AbsoluteConstraints(17, 538, 48, 40));
+
+        getContentPane().add(navPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 82, 600));
+
+        setBounds(0, 0, 900, 600);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void movePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_movePressed
+        x = evt.getX() + navPane.getWidth();
+        y = evt.getY();
+
+
+    }//GEN-LAST:event_movePressed
+
+    private void moveDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_moveDragged
+
+        Point coord = evt.getLocationOnScreen();
+        setLocation(coord.x - x, coord.y - y);
+    }//GEN-LAST:event_moveDragged
+
+    private void backButtonLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonLabelMouseClicked
+        dispose();
+        new AdminHomeView(controller).setVisible(true);
+    }//GEN-LAST:event_backButtonLabelMouseClicked
+
+    private void navActionButton(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navActionButton
+        int selected = 0;
+        if (evt.getSource() == empBTNLabel) {
+            selected = 1;
+        } else if (evt.getSource() == depBTNLabel) {
+            selected = 2;
+        } else if (evt.getSource() == aboutBTN) {
+            selected = 3;
+        }
+
+        changePanel(selected);
+    }//GEN-LAST:event_navActionButton
+
+    private void minLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minLabel1MouseClicked
+        setState(ICONIFIED);
+    }//GEN-LAST:event_minLabel1MouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jLabel4MouseClicked
+    private void setStatus(boolean value) {
+        statusPane.setVisible(true);
+        statusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Lock.png")));
+        statusBtn.setBackground(new java.awt.Color(252, 74, 74));
+        jLabel10.setText("LOCKED");
+        if (!value) {
+            statusBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Unlock.png")));
+            statusBtn.setBackground(new java.awt.Color(1, 209, 143));
+            jLabel10.setText("UNLOCKED");
+        }
+    }
+
+    private boolean isReadyToSaved() {
+        boolean username = userField.getText().equals("");
+        boolean password = passwordField.getText().equals("");
+        boolean firstName = fNameField.getText().equals("");
+        boolean lastName = lNameField.getText().equals("");
+        boolean depChoice = departmentCombo.getSelectedIndex() == 0;
+
+        boolean isReady = true;
+        String message = "Please fill in all required fields:";
+
+        if (username || password || firstName || lastName || depChoice) {
+            if (username) {
+                message += "\nUsername";
+            }
+            if (password) {
+                message += "\nPassword";
+            }
+            if (firstName) {
+                message += "\nFirst Name";
+            }
+            if (lastName) {
+                message += "\nLast Name";
+            }
+            if (depChoice) {
+                message += "\nDepartment";
+            }
+            isReady = false;
+            JOptionPane.showMessageDialog(null, message, "Message", JOptionPane.ERROR_MESSAGE);
+        }
+        return isReady;
+    }
+    private void saveButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButton1ActionPerformed
+        String username = userField.getText();
+        String password = passwordField.getText();
+        String firstName = fNameField.getText();
+        String lastName = lNameField.getText();
+        String department = departmentCombo.getSelectedItem().toString();
+
+        isExist = false;
+        if (isReadyToSaved()) {
+            controller.getEmployeeList((model) -> {
+                if (username.equals(model.getUsername())) {
+                    isExist = true;
+                }
+            });
+
+            if (!isExist) {
+                controller.addEmployee(new EmployeeModel(username, password,
+                        firstName, lastName, gender, department, 0, false));
+                JOptionPane.showMessageDialog(null, "Added Successful");
+            } else {
+                JOptionPane.showMessageDialog(null, "Account is already exist!");
+            }
+        }
+        showEmployeesList(filterCombo.getSelectedItem().toString());
+    }//GEN-LAST:event_saveButton1ActionPerformed
+
+    private void genderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genderActionPerformed
+        if (femaleRadioBTN.isSelected()) {
+            gender = "female";
+        }
+        if (maleRadioBTN.isSelected()) {
+            gender = "male";
+        }
+    }//GEN-LAST:event_genderActionPerformed
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        userField.setText("");
+        fNameField.setText("");
+        lNameField.setText("");
+        passwordField.setText("");
+        maleRadioBTN.setSelected(true);
+        departmentCombo.setSelectedIndex(0);
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void filterComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterComboActionPerformed
+        showEmployeesList(filterCombo.getSelectedItem().toString());
+    }//GEN-LAST:event_filterComboActionPerformed
+
+    private void empTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_empTableMouseClicked
+
+        DefaultTableModel tableModel = (DefaultTableModel) empTable.getModel();
+        int row = empTable.getSelectedRow();
+        controller.getEmployeeList((model) -> {
+            String username = tableModel.getValueAt(row, 0).toString();
+            if (username.equals(model.getUsername())) {
+                emp = model;
+            }
+        });
+//        System.out.println(emp.getUsername());
+        setStatus(emp.isLocked());
+    }//GEN-LAST:event_empTableMouseClicked
+
+    private void statusBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusBtnActionPerformed
+        empTable.clearSelection();
+        statusPane.setVisible(false);
+        if (emp.isLocked()) {
+            emp.setLocked(false);
+            emp.setCounter(0);
+        } else {
+            emp.setCounter(3);
+            emp.setLocked(true);
+        }
+        controller.updateEmployee(emp);
+        showEmployeesList(filterCombo.getSelectedItem().toString());
+    }//GEN-LAST:event_statusBtnActionPerformed
+
+    private boolean isDepartmentReady() {
+        boolean isReady = true;
+        boolean number = depNumberField.getText().equals("");
+        boolean name = depNameField.getText().equals("");
+        String message = "Please fill all the required fields:";
+        if (number && name) {
+            message += "\nDon't leave any blanks";
+            isReady = false;
+        } else if (number || name) {
+            if (number) {
+                message += "\nNumber";
+            }
+            if (name) {
+                message += "\nName";
+            }
+            isReady = false;
+
+        }
+
+        if (!isReady) {
+            JOptionPane.showMessageDialog(null, message, "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+        return isReady;
+    }
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        boolean isEmpty = deleteField.getText().equals("");
+        String username = deleteField.getText();
+        isExist = false;
+        if (!isEmpty) {
+            controller.getEmployeeList((model) -> {
+                if (username.equals(model.getUsername())) {
+                    emp = model;
+                    isExist = true;
+                }
+            });
+            if (!isExist) {
+                JOptionPane.showMessageDialog(null, "Account is not exist!");
+            } else {
+                controller.deleteEmployee(emp);
+            }
+            showEmployeesList(filterCombo.getSelectedItem().toString());
+        } else {
+            JOptionPane.showMessageDialog(null, "Field is empty", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void clearBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBTNMouseClicked
+        depNameField.setText("");
+        depNumberField.setText("");
+    }//GEN-LAST:event_clearBTNMouseClicked
+
+    private void addBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBTNMouseClicked
+//        System.out.println("clicked");
+        if (isDepartmentReady()) {
+            String number = depNumberField.getText();
+            String name = depNameField.getText();
+            isExist = false;
+            controller.getDepartmentsList((depMap) -> {
+                if (number.equals(depMap.get("number"))) {
+                    isExist = true;
+                }
+            });
+
+            System.out.println(isExist);
+            if (isExist) {
+                JOptionPane.showMessageDialog(null, "Department is already exist!");
+            } else {
+
+                HashMap<String, Object> object = new HashMap<>();
+                object.put("number", number);
+                object.put("name", name);
+                JOptionPane.showMessageDialog(null, "Added Successful");
+                controller.addDepartments(object);
+                showDepartmentList();
+            }
+
+        }
+    }//GEN-LAST:event_addBTNMouseClicked
+
+    private void deleteButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButton1ActionPerformed
+        boolean isEmpty = deleteField1.getText().equals("");
+        String number = deleteField1.getText();
+        isExist = false;
+        if (!isEmpty) {
+            controller.getDepartmentsList((map) -> {
+                if (number.equals(map.get("number"))) {
+                    depMap = map;
+                    isExist = true;
+                }
+            });
+            if (!isExist) {
+                JOptionPane.showMessageDialog(null, "Department is not exist!");
+            } else {
+                controller.deleteDepartments(depMap);
+                JOptionPane.showMessageDialog(null, "Deleted successfully.");
+                showDepartmentList();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Field is empty", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteButton1ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(SecondHomeView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(SecondHomeView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(SecondHomeView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(SecondHomeView.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new SecondHomeView(0, null).setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel DepartmentInfoPane;
+    private javax.swing.JLabel about;
+    private javax.swing.JPanel aboutBTN;
+    private javax.swing.JPanel aboutLayerPane;
+    private javax.swing.JLabel addBTN;
+    private javax.swing.JLabel backButtonLabel;
+    private javax.swing.JLabel clearBTN;
+    private javax.swing.JButton clearButton;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton deleteButton1;
+    private javax.swing.JTextField deleteField;
+    private javax.swing.JTextField deleteField1;
+    private javax.swing.JPanel deletePane;
+    private javax.swing.JPanel deletePane1;
+    private javax.swing.JLabel depBTNLabel;
+    private javax.swing.JTextField depNameField;
+    private javax.swing.JTextField depNumberField;
+    private javax.swing.JTable depTable;
+    private javax.swing.JComboBox<String> departmentCombo;
+    private javax.swing.JPanel departmentLayerPane;
+    private javax.swing.JPanel departmentPane;
+    private javax.swing.JLabel empBTNLabel;
+    private javax.swing.JTable empTable;
+    private javax.swing.JPanel employeeLayerPane;
+    private javax.swing.JLabel exitLabel;
+    private javax.swing.JLabel exitLabel1;
+    private javax.swing.JLabel exitLabel2;
+    private javax.swing.JTextField fNameField;
+    private javax.swing.JPanel fNamePane;
+    private javax.swing.JRadioButton femaleRadioBTN;
+    private javax.swing.JComboBox<String> filterCombo;
+    private javax.swing.JPanel filterPane;
+    private javax.swing.JPanel frameBar;
+    private javax.swing.JPanel frameBar1;
+    private javax.swing.JPanel frameBar2;
+    private javax.swing.ButtonGroup genderGroup;
+    private javax.swing.JPanel genderPane;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField lNameField;
+    private javax.swing.JPanel lNamePane;
+    private javax.swing.JLayeredPane layeredPane;
+    private javax.swing.JRadioButton maleRadioBTN;
+    private javax.swing.JLabel minLabel;
+    private javax.swing.JLabel minLabel1;
+    private javax.swing.JLabel minLabel2;
+    private javax.swing.JPanel navPane;
+    private javax.swing.JTextField passwordField;
+    private javax.swing.JPanel passwordPane;
+    private javax.swing.JButton saveButton1;
+    private javax.swing.JPanel status;
+    private javax.swing.JButton statusBtn;
+    private javax.swing.JPanel statusPane;
+    private javax.swing.JLabel us;
+    private javax.swing.JTextField userField;
+    private javax.swing.JPanel usernamePane;
+    // End of variables declaration//GEN-END:variables
+}

@@ -1,0 +1,41 @@
+[
+    {
+        "department": [{
+                "number": "1",
+                "name": "Account Department"
+            }, {
+                "number": "2",
+                "name": "Technical Department"
+            }, {
+                "number": "3",
+                "name": "IT Department"
+            }]
+    },
+    {
+        "users": [
+            {
+                "username": "admin",
+                "password": "admin"
+            },
+            {
+                "username": "mosh",
+                "password": "mosh",
+                "fName": "Muslimin",
+                "lName": "Ontong",
+                "gender": "male",
+                "counter": 0,
+                "department": "IT Department",
+                "status": "unlocked"
+            }, {
+                "username": "josh",
+                "password": "josh",
+                "fName": "Josh",
+                "lName": "Dope",
+                "gender": "male",
+                "counter": 3,
+                "department": "Account Department",
+                "status": "locked"
+            }
+        ]
+    }
+]
